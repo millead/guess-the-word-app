@@ -13,28 +13,26 @@ const wordInProgess = document.querySelector(".word-in-progress");
 const remGuessElement = document.querySelector(".remaining");
 const remGuessSpan = document.querySelector(".remaining span");
 const message = document.querySelector(".message");
-const hiddenButton = document.querySelector(".play-again");
+const playAgainButton = document.querySelector(".play-again");
 
 const word = "magnolia";
 const guessedLetters = [];
 const remainingGuesses = 8;
 
 const getWord = async function () {
-  const res = await fetch ("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const res = await fetch(
+    "https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
+  );
   const words = await res.text();
   //console.log(word);
-const wordArray = words.split("\n");
-const randomIndex = Math.floor(Math.random() * wordArray.length);
-let word = wordArray[randomIndex];
+  const wordArray = words.split("\n");
+  const randomIndex = Math.floor(Math.random() * wordArray.length);
+  let word = wordArray[randomIndex];
 
-placeholder(word);
+  placeholder(word);
 };
 
-
-
 getWord();
-
-
 
 /* function to add placeholders for each letter*/
 const placeholder = function (word) {
@@ -148,3 +146,28 @@ const correctGuess = function () {
     message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
   }
 };
+
+const startOver = function () {
+  guessButton.classList.add("hide");
+  guessedLettersElement.classList.add("hide");
+  remGuessElement.classList.add("hide");
+  playAgainButton.classList.remove("hide");
+};
+
+playAgainButton.addEventListener("click", function () {
+  message.classList.remove("win");
+  guessedLettersElement.innerText === 0;
+  remainingGuesses = 8;
+  guessedLetters = [];
+  remGuessSpan = `${remainingGuesses} guesses`;
+  guessedLettersElement.innerHTML = "";
+  message.innerText = "";
+  // Grab a new word
+  getWord();
+
+  // show the correct elements for UI
+  guessButton.classList.remove("hide");
+  guessedLettersElement.classList.remove("hide");
+  remGuessElement.classList.remove("hide");
+  playAgainButton.classList.add("hide");
+});
